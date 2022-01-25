@@ -1,0 +1,86 @@
+import itertools
+import math
+
+vector = [1,2,3,4,5,6,7]
+
+
+for N in range(1,len(vector)): #increase 19 to 31 to see the first 30 numbers in your sequence
+    s = []
+    for i in range(1, N+1):
+        s.append(i)
+
+    def findsubsets(d, n): 
+        return list(itertools.combinations(d, n))
+    def intersection(lst1, lst2):
+        lst3 = [value for value in lst1 if value in lst2]
+        return lst3
+#    def Intersection(lst1, lst2):
+#        return list(lst1).intersection(list(lst2))
+
+    subsets = []
+    for i in range(1,N+1):
+        subsets = subsets + findsubsets(s,i)
+
+    legal1 = []
+    for sets in subsets:
+        sets = list(sets)
+        if min(sets) >= len(sets) and max(sets) == N: #this is the Schreier condition. 
+            legal1.append(sets)
+    legal2 = []
+    for sets in subsets:
+        sets = list(sets)
+        if min(sets) >= len(sets): #this is the Schreier condition. 
+            legal2.append(sets)            
+    legal3 = []
+    for F in legal1:
+        legal3.append(F)
+        for G in legal2:
+            if intersection(F,G) == []:
+                P = F + G
+                P.sort()
+                legal3.append(P)            
+            for H in legal2:
+                if intersection(F,G) == [] and intersection(F,H) == [] and intersection(G,H) == []:
+                    Q = F + G + H
+                    Q.sort()
+                    legal3.append(Q)    # double counting!!
+    legal4 = []
+    for i in legal3:
+        if i not in legal4:
+            legal4.append(i)            
+            #make_set = set(legal2)    
+    #mylist = list( dict.fromkeys(legal2) )
+    #print(len(legal4))
+    #print(legal4)
+
+print(legal2)
+
+total_schr = []
+for F in legal2:
+    vector_F = []
+    for i in F:
+        vector_F.append(vector[i-1])
+    print(vector_F)
+    
+    total = 0
+    for j in range(1, len(vector_F)): 
+        total = total + vector_F[j]
+    #print(total)
+    total_schr.append(total)
+
+norm_schr = max(total_schr)
+
+#print(total_schr)
+
+#print("the Schreier norm:", + norm_schr)
+
+#print(legal2)
+
+k = [1,2,4]
+
+print(k)
+
+v_k = []
+for i in k:
+    v_k.append(vector[i-1])
+print(v_k)    
